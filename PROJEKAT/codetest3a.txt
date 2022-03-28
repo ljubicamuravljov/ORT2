@@ -1,0 +1,188 @@
+100, C0//LD +(R63)
+101, BF
+102, C2//ST (BX)02h
+103, E0
+104, 02
+105, C4//ADD 0006h
+106, C0
+107, 06
+108, 00
+109, 84//ROR
+10A, C2//ST R2
+10B, 02
+10C, 87//LSL
+10D, C2//ST (0008h)
+10E, D0
+10F, 08
+110, 00
+111, 00//BGRT 05h
+112, 05
+113, C3//LEA (r2)
+114, 42
+115, 02//BLSS 01
+116, 01
+117, CF//HALT
+118, 41//JSR 011Eh
+119, 1E
+11A, 01
+11B, 40//JMP 0115h
+11C, 15
+11D, 01
+11E, C0//LD #2000
+11F, F0
+120, 00
+121, 20
+122, C7 //OR #0001
+123, F0
+124, 01
+125, 00
+128, 80//RTS
+126, 8E//PUSHALL
+127, 8F//POPALL
+0002, 69
+0003, 00
+0006, 00
+0007, 80
+0008, 0A
+0009, 00
+
+
+
+M1_2
+M1_3,
+M3_2,
+M2_1
+
+B2	MAR
+B3	MDR		B1
+B1	DWH/L	
+	DW		B2
+B2	PC		B1
+	PCH/L	B3
+B1	IR0123
+
+IR7..0,IR15..8 - IRDAout3
+IR23..8 	   - IRJAout2
+IR23..IR23..16 - IRPOMout3
+IR31..24 	   - IRBRout3
+
+B1	GPRAR
+B3	GPR 	GPRout1
+B3	SP		SPout2
+B3/1 ADD	ADDout2
+B2	CW		CWout3
+
+B1	AB		ABout3
+B1	BB		BBout2
+B3/2 ALU	ALUout1
+B2	AW		AWout3/ AWHout3
+B2	BW		BWout2
+
+ldPSWH, ldPSWL, ldN, ldZ, ldC, ldV
+
+
+
+
+
+adrese 16 bit
+podaci 16 bit 
+sirina memorije 8 bit - little endian
+
+STEK - raste navise, SP poslednja zauzeta
+
+BEZADRESNE
+1B - 10cccccc
+
+brnch
+USLOVNI SKOK - relativan skok u odn na PC
+2B - 00cccccc Zpom8bit
+
+jump
+BEZUSLOVNI SKOK - apsolutni skok
+3B - 01cccccc mlBajt stBajt
+
+ADRESNE
+-regdir, regind, preinc, 
+2B - 11cccccc AArrrrrr
+(AA = 00 regidr, 01 regind, 10 preinc
+ rrrrrr = registar R[0] - R[63])
+
+-memdir, memind, 
+4B - 11cccccc AAAAxxxx mlBajtA stBajtA
+
+brpom - pomeraj 12 bit sa znakom, koristi R[63]
+3B - 11cccccc AAAApppp pppppppp
+
+immed
+4B - 11cccccc AAAAxxxx mlBajtP stBajtP
+
+    1100xxxx - memdir
+    1101xxxx - memind	
+    1110xxxx - bxpom	
+    1111xxxx - immed
+
+
+us - 00xxxxxx
+	BGRT - 00000000 	- 00
+	BGRE - 00000001 	- 01
+	BLSS - 00000010 	- 02
+	BLEQ - 00000011 	- 03
+	BGRTU - 00000100 	- 04
+	BGREU - 00000101 	- 05
+	BLSSU - 00000110 	- 06
+	BLEQU - 00000111 	- 07
+	BEQL - 00001000 	- 08
+	BNEQ - 00001001 	- 09
+	BNEG - 00001010 	- 0A
+	BNNG - 00001011 	- 0B
+	BOVF - 00001100 	- 0C
+	BNVF - 00001101 	- 0D
+	BCR - 00001110 		- 0E
+	BNCR - 00001111 	- 0F
+
+bs - 01xxxxxx
+	JMP - 01000000 		- 40
+	JSR - 01000001 		- 41
+
+bi - 10xxxxxx
+	RTS - 10000000 		- 80
+	RTI - 10000001 		- 81
+	ASR - 10000010	 	- 82
+	LSR - 10000011 		- 83
+	ROR - 10000100 		- 84
+	RORC - 10000101 	- 85
+	ASL - 10000110 		- 86
+	LSL - 10000111 		- 87
+	ROL - 10001000 		- 88
+	ROLC - 10001001 	- 89
+	INTE - 10001010 	- 8A
+	INTD - 10001011 	- 8B
+	STIVTP -10001100 	- 8C
+	STSP - 	10001101 	- 8D
+	PUSHALL -10001110 	- 8E
+	POPALL - 10001111	- 8F
+
+ai - 11xxxxxx
+	LD - 11000000		- C0
+	LOADL - 11000001	- C1
+	ST - 11000010		- C2
+	LEA - 11000011		- C3
+	ADD - 11000100		- C4
+	SUB - 11000101		- C5
+	AND - 11000110		- C6
+	OR - 11000111		- C7
+	XOR - 11001000		- C8
+	NEG - 11001001		- C9
+	SWP - 11001010		- CA
+	HALT - 	11001111	- CF
+
+00xxxxxx - regdir
+01xxxxxx - regind
+10xxxxxx - preinc
+11xxxxxx - memadr
+	1100xxxx - memdir
+    	1101xxxx - memind	
+    	1110xxxx - bxpom	
+    	1111xxxx - immed
+
+
